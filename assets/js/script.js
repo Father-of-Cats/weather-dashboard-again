@@ -1,27 +1,31 @@
-// Form Elements
-const formEl = document.querySelector("#cityinput");
-const InputEl = document.querySelector("#cityname");
-const buttonEl = document.querySelector("#citysubmit");
+$(document).ready(function() {
+    const APIKey = "eafa260ed54cac7951d9d21533a37bc8"
+    //Jquery submit handler
+    $("#cityform").submit((event)=>{
+        event.preventDefault();
+        const city = $("#cityname").val().trim();
+        if(city){ 
+            getWeather(city);
+            console.log(city);  
+        } else {
+            alert("Please enter a city name")
+        };
+    });
 
-// Today's Weather Elements
-const headerEl = document.querySelector("#current-name");
-const containerEl = document.querySelector("current-container");
 
 
 // event handler for search submit button
-const submitEvent = (event) => {
-    event.preventDefault();
-    console.log("SUBMIT")
-}
+// const submitEvent = (event) => {
+//     event.preventDefault();
+//     console.log("SUBMIT")
+// }
 
 // listens for form submit
-formEl.addEventListener('submit',submitEvent);
+// formEl.addEventListener('submit',submitEvent);
 
 
-const getWeather = () => {
-    let city = 'dallas';
-    let APIKey = "eafa260ed54cac7951d9d21533a37bc8";
-    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIKey;
+getWeather = (city) => {
+    let queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${APIKey}`;
 
     fetch(queryURL).then((response) => {
         response.json().then((data)=> {
@@ -29,4 +33,4 @@ const getWeather = () => {
         });
     })
 }
-// getWeather();
+});
