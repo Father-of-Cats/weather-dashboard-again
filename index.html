@@ -15,11 +15,21 @@
 <!-- row -->
 <div class="row">
 <!-- input -->
-<div id="cityinput" class="col"></div>
+<form id="cityinput" class="col-md-6">
+    <h2>Enter City Name</h2>
+    <label for="cityname">City Name</label>
+    <input type="text" id="cityname">
+    <button id="citysubmit" type="submit">Search</button>
+</form>
 <!-- today's weather display -->
-<div class="col"></div>
+<div class="col-md-6">
+    <h2 id="current-name"></h2>
+    <div id="current-container"></div>
+</div>
 <!-- row end -->
 </div>
+
+
 
 <!-- row -->
 <div class="row">
