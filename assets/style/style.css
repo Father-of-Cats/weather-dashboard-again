@@ -1,0 +1,9 @@
+.severe{
+    background-color: red;
+}
+.moderate{
+    background-color: yellow;
+}
+.favorable{
+    background-color: rgb(49, 192, 235);
+}

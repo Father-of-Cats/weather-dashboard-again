@@ -41,8 +41,14 @@ $(document).ready(function() {
         fetch(apiUrl).then((response) => {
             response.json().then((uvdata) => {
                 $("#current-container").append(`<span id='uvindex' class='list-group-item'>UV Index: ${uvdata.value}</span>`)
+                if(uvdata.value <= 2) {
+                    $("#uvindex").addClass('favorable')
+                    } else if(uvdata.value >2 && uvdata.value <=8){
+                        $("#uvindex").addClass('moderate')
+                    } else if(uvdata.value >8){
+                        $("#uvindex").addClass('severe')
+                    };
+                });
             })
-        })
-    };
-
-});
+        }
+    });
