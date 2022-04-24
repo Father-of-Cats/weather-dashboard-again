@@ -10,6 +10,7 @@ $(document).ready(function() {
         let city = $("#cityname").val().trim();
         if(city){ 
             getWeather(city);
+            getForecast(city);
             cities.push({city});
             localStorage.setItem("cities", JSON.stringify(cities));
             $("#cityname").val("");  
@@ -79,6 +80,51 @@ $(document).ready(function() {
         }
     };
 
+    getForecast = (city) =>{
+        let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${APIKey}`;
+        fetch(apiUrl).then((response) =>{
+            response.json().then((data) =>{
+                displayForecast(data);
 
+            })
+        })
+    }
+
+    displayForecast = (data) => {
+        $("#fiveday-container").html("")
+        $("#fivedayhead").html("Five Day Forecast").addClass("h2 p-2 m-2");
+
+        let fiveday = data.list;
+        for(let i = 5; i < fiveday.length; i = i + 8) {
+            let dailyForecast = fiveday[i];
+
+            const dayEl = document.createElement("div");
+            dayEl.classList = 'card bg-light text-dark m-3';
+            
+
+            let dateEl = document.createElement("h4");
+            dateEl.textContent = moment.unix(dailyForecast.dt).format("MMM D, YYYY");
+            dateEl.classList = "text-center card-header";
+            dayEl.appendChild(dateEl);
+
+            let weatherIcon = document.createElement("img")
+            weatherIcon.classList = "card-body bg-primary text-center";
+            weatherIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + dailyForecast.weather[0].icon + "@2x.png");
+            dayEl.append(weatherIcon);
+
+            let tempEl = document.createElement("span");
+            tempEl.classList = "card-body text-center";
+            tempEl.textContent = dailyForecast.main.temp + " °F";
+            dayEl.appendChild(tempEl);
+
+            let humEl = document.createElement("span");
+            humEl.classList = "card-body text-center"
+            humEl.textContent = dailyForecast.main.humidity + " %"
+            dayEl.appendChild(humEl);
+
+            
+            $("#fiveday-container").append(dayEl);
+    }
+ };
 
 });
