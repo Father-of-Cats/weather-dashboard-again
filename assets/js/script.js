@@ -11,7 +11,7 @@ $(document).ready(function() {
         if(city){ 
             getWeather(city);
             getForecast(city);
-            cities.push({city});
+            cities.push(city);
             localStorage.setItem("cities", JSON.stringify(cities));
             $("#cityname").val("");  
         } else {
@@ -59,18 +59,35 @@ $(document).ready(function() {
             })
         })
     };
-
+    $("<h3>Past Searched</h3>").appendTo($("#saved-city"))
     savedSearch = (city) => {
-        if(city) {
-        $("#citylist").html("<h4 id='listhead'> Past Viewed Cities</h4>").addClass('list-group')
-        $("#listhead").append(`<button id='citybutton' class='list-group-item'>${city}</button>`)
-        $("#citybutton").attr('data-city', city).attr('type', 'submit');
+        if (city) {
+            savedEl = document.createElement("button");
+            savedEl.textContent = city;
+            savedEl.classList = "list-group-item";
+            savedEl.setAttribute("data-city", city);
+            savedEl.setAttribute("type", "submit");
+            
+            $("#saved-city").append(savedEl)
+            } else {
+               console.log("errorrrrrrrrrrrrrrrrrrrrrrr"); 
+            };
+        
+        };
+   
 
-        $("#citylist").append($("#citybutton"))
-        } else {
-            console.log("save didn't work!")
-        }
-    }
+    // return to this later to get functional in JQ
+    // savedSearch = (city) => {
+    //     if(city) {
+    //     $("#citylist").html("<h4 id='listhead'> Past Viewed Cities</h4>").addClass('list-group')
+    //     $("#listhead").append(`<button id='citybutton' class='list-group-item'>${city}</button>`)
+    //     $("#citybutton").attr('data-city', city).attr('type', 'submit');
+
+    //     $("#citylist").append($("#citybutton"))
+    //     } else {
+    //         console.log("save didn't work!")
+    //     }
+    // }
 
     savedSearchHandle = (event) => {
         event.preventDefault();
@@ -105,22 +122,22 @@ $(document).ready(function() {
             let dateEl = document.createElement("h4");
             dateEl.textContent = moment.unix(dailyForecast.dt).format("MMM D, YYYY");
             dateEl.classList = "text-center card-header";
-            dayEl.appendChild(dateEl);
+            dayEl.append(dateEl);
 
             let weatherIcon = document.createElement("img")
             weatherIcon.classList = "card-body bg-primary text-center";
-            weatherIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + dailyForecast.weather[0].icon + "@2x.png");
+            weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);
             dayEl.append(weatherIcon);
 
             let tempEl = document.createElement("span");
             tempEl.classList = "card-body text-center";
-            tempEl.textContent = dailyForecast.main.temp + " °F";
-            dayEl.appendChild(tempEl);
+            tempEl.textContent = `${dailyForecast.main.temp}°F`;
+            dayEl.append(tempEl);
 
             let humEl = document.createElement("span");
             humEl.classList = "card-body text-center"
-            humEl.textContent = dailyForecast.main.humidity + " %"
-            dayEl.appendChild(humEl);
+            humEl.textContent = `${dailyForecast.main.humidity}%`
+            dayEl.append(humEl);
 
             
             $("#fiveday-container").append(dayEl);
