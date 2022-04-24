@@ -10,13 +10,15 @@ $(document).ready(function() {
         let city = $("#cityname").val().trim();
         if(city){ 
             getWeather(city);
-            cities.push(city);
+            cities.push({city});
             localStorage.setItem("cities", JSON.stringify(cities));
             $("#cityname").val("");  
         } else {
             alert("Please enter a city name")
         }
+        savedSearch(city)
     });
+
 
     getWeather = (city) => {
         let queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${APIKey}`;
@@ -52,9 +54,31 @@ $(document).ready(function() {
                         $("#uvindex").addClass('moderate')
                     } else if(uvdata.value >8){
                         $("#uvindex").addClass('severe')
-                    }
-                })
+                }
             })
-        };
+        })
+    };
+
+    savedSearch = (city) => {
+        if(city) {
+        $("#citylist").html("<h4 id='listhead'> Past Viewed Cities</h4>").addClass('list-group')
+        $("#listhead").append(`<button id='citybutton' class='list-group-item'>${city}</button>`)
+        $("#citybutton").attr('data-city', city).attr('type', 'submit');
+
+        $("#citylist").append($("#citybutton"))
+        } else {
+            console.log("save didn't work!")
+        }
+    }
+
+    savedSearchHandle = (event) => {
+        event.preventDefault();
+        let city = event.target.attr("data-city")
+        if(city) {
+            getWeather(city)
+        }
+    };
+
+
 
 });
