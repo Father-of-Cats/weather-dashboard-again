@@ -31,5 +31,18 @@ $(document).ready(function() {
         $("#current-container").append(`<span class='list-group-item'>Wind Speed: ${data.wind.speed}MPH</span>`)
         $("#current-container").append(`<span class='list-group-item'>Feels Like: ${data.main.feels_like}°F</span>`)
 
+        uvIndex(data);
     }
+
+    uvIndex = (data) => {
+        let lat = data.coord.lat;
+        let lon = data.coord.lon;
+        let apiUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIKey}&lat=${lat}&lon=${lon}`;
+        fetch(apiUrl).then((response) => {
+            response.json().then((uvdata) => {
+                $("#current-container").append(`<span id='uvindex' class='list-group-item'>UV Index: ${uvdata.value}</span>`)
+            })
+        })
+    };
+
 });
